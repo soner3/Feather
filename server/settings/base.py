@@ -2,6 +2,7 @@ from os import getenv, path
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+import cloudinary
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -30,11 +31,15 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    "phonenumber_field",
+    "django_countries",
 ]
 
 LOCAL_APPS = [
     "apps.userauth",
     "apps.users",
+    "apps.profiles",
+    "apps.posts",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -170,5 +175,10 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "users/password/reset/{uid}/{token}",
 }
 
-
 CORS_ALLOW_ALL_ORIGINS = True
+
+cloudinary.config(
+    cloud_name=getenv("CLOUD_NAME"),
+    api_key=getenv("API_KEY"),
+    api_secret=getenv("API_SECRET"),
+)

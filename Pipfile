@@ -37,6 +37,13 @@ typing-extensions = "==4.12.2"
 urllib3 = "==2.2.2"
 django-cors-headers = "*"
 python-decouple = "*"
+redis = "*"
+celery = "*"
+cloudinary = "*"
+django-countries = "*"
+django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
+babel = "*"
+pillow = "*"
 
 [dev-packages]
 
