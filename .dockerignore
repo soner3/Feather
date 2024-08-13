@@ -1,0 +1,6 @@
+*Dockerfile
+.gitignore
+.git
+.mypy_cache
+Pipfile
+Pipfile.lock

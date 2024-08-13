@@ -1,0 +1,79 @@
+version: "3.9"
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./static:/app/static
+      - logs_store:/var/log/nginx
+    depends_on:
+      - client
+      - server
+      - mailpit
+
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./docker/local/server/Dockerfile
+    env_file:
+      - ./.envs/.env.local
+    # ports:
+    #   - 8000:8000
+    expose:
+      - "8000"
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+      - mailpit
+
+  postgres:
+    container_name: postgres
+    image: postgres:16.3-bullseye
+    env_file:
+      - ./.envs/.env.local
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: ./docker/local/Dockerfile
+    # ports:
+    #   - 3000:3000
+    expose:
+      - "3000"
+    env_file:
+      - ./.envs/.env.local
+    volumes:
+      - ./client/src:/app/src
+      - /app/node_modules
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    volumes:
+      - mailpit_data:/data
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  postgres_data: {}
+  mailpit_data: {}
+  logs_store: {}
