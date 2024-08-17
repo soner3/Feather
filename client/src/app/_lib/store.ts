@@ -1,11 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sidebarReducer from "./features/sidebarSlice";
+import authReducer from "./features/authSlice";
 
-export const store = configureStore({
-  reducer: {
-    sidebar: sidebarReducer,
-  },
-});
+export const makeStore = () => {
+  return configureStore({
+    reducer: {
+      sidebar: sidebarReducer,
+      auth: authReducer,
+    },
+  });
+};
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];

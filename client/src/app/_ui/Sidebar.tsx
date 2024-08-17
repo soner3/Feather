@@ -1,13 +1,12 @@
 "use client";
 
 import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "../_lib/hooks/reduxHooks";
+import { motion } from "framer-motion";
+import { useAppSelector } from "../_lib/hooks/reduxHooks";
 import SidebarItemList from "./SidebarItemList";
 
 export default function Sidebar() {
   const isOpen = useAppSelector((store) => store.sidebar.isOpen);
-  const dispatch = useAppDispatch();
 
   const sidebarVariants = {
     closed: {

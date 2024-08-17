@@ -1,14 +1,17 @@
 import React, { ReactNode } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useAppSelector } from "../_lib/hooks/reduxHooks";
+import { usePathname } from "next/navigation";
 
 interface PropTypes {
   icon: ReactNode;
   title: string;
+  href: string;
 }
 
-export default function SidebarItem({ icon, title }: PropTypes) {
+export default function SidebarItem({ icon, title, href }: PropTypes) {
+  const path = usePathname();
+
   const variants = {
     hidden: {
       y: 100,
@@ -23,9 +26,9 @@ export default function SidebarItem({ icon, title }: PropTypes) {
   };
 
   return (
-    <Link href={"/"}>
+    <Link href={href}>
       <motion.li
-        className="flex cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-sky-500 dark:shadow-white"
+        className={`flex h-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-sky-500 dark:shadow-white ${path === href ? "shadow-xl shadow-sky-500 dark:shadow-white" : ""}`}
         variants={variants}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}

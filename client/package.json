@@ -11,14 +11,21 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/material": "^5.16.7",
     "@reduxjs/toolkit": "^2.2.7",
     "framer-motion": "^11.3.24",
+    "jwt-decode": "^4.0.0",
     "next": "14.2.5",
+    "next-auth": "^5.0.0-beta.20",
+    "next-redux-wrapper": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "react-toastify": "^10.0.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

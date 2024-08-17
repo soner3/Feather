@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .input {
+    @apply rounded-lg border border-sky-500 bg-transparent p-2 text-black outline-none transition-all duration-300 focus:border-none focus:ring-2 dark:text-white;
+  }
+  .error {
+    @apply text-red-500 ring-red-500;
+  }
+}
+
+.loader {
+  position: relative;
+  border: 24px solid #fff;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: eat 1s linear infinite;
+}
+.loader::after,
+.loader::before {
+  content: "";
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: move 2s linear infinite;
+}
+
+.loader::before {
+  animation-delay: 1s;
+}
+
+@keyframes eat {
+  0%,
+  49% {
+    border-right-color: #fff;
+  }
+  50%,
+  100% {
+    border-right-color: #0000;
+  }
+}
+@keyframes move {
+  0% {
+    left: 75px;
+    opacity: 1;
+  }
+  50% {
+    left: 0px;
+    opacity: 1;
+  }
+  52%,
+  100% {
+    left: -5px;
+    opacity: 0;
+  }
+}

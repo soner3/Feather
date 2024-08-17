@@ -10,6 +10,8 @@ class Profile(models.Model):
     id: models.UUIDField = models.UUIDField(
         default=uuid.uuid4(), unique=True, editable=False
     )
+
+    # 1:1 Relationship to User
     user: models.OneToOneField = models.OneToOneField(
         to=User,
         on_delete=models.SET_NULL,
@@ -41,12 +43,17 @@ class Profile(models.Model):
     )
     house_number: models.CharField = models.CharField(
         max_length=255,
-        help_text=_("The street the User lives in"),
+        help_text=_("The house number of the User"),
         null=False,
         blank=False,
-        verbose_name=_("Street"),
+        verbose_name=_("House Number"),
     )
     created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = _("Profile")
+        verbose_name_plural = _("Profiles")
 
     def __str__(self) -> str:
         return f"{self.user.username}"

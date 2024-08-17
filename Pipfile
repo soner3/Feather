@@ -44,6 +44,9 @@ django-countries = "*"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
 babel = "*"
 pillow = "*"
+djangorestframework-stubs = "*"
+pika = "*"
+celery-stubs = "*"
 
 [dev-packages]
 

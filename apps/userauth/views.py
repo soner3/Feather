@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializers import CustomTokenObtainPairSerializer
 from rest_framework.request import Request
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from django.conf import settings
 
 
 def set_http_cookies(
@@ -13,12 +14,12 @@ def set_http_cookies(
     refresh_token: str,
     http_only: bool,
     secure: bool,
-    expire_days: float,
+    expire_days: datetime.timedelta,
 ):
     response.set_cookie(
-        key="refresh",
+        key=key,
         value=refresh_token,
-        expires=datetime.datetime.now() + datetime.timedelta(days=expire_days),
+        expires=datetime.datetime.now() + expire_days,
         httponly=http_only,
         secure=secure,
     )
@@ -31,8 +32,25 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         response = super().post(request, *args, *kwargs)
 
         refresh_token = response.data["refresh"]
-        set_http_cookies(response, "refresh", refresh_token, True, False, 1)
+        access_token = response.data["access"]
+        set_http_cookies(
+            response,
+            settings.REFRESH_COOKIE_NAME,
+            refresh_token,
+            True,
+            False,
+            datetime.timedelta(days=1),
+        )
+        set_http_cookies(
+            response,
+            settings.ACCESS_COOKIE_NAME,
+            access_token,
+            True,
+            False,
+            datetime.timedelta(minutes=10),
+        )
         del response.data["refresh"]
+        del response.data["access"]
 
         return response
 
@@ -41,7 +59,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         data = request.data.copy()
-        data["refresh"] = request.COOKIES["refresh"]
+        data["refresh"] = request.COOKIES[settings.REFRESH_COOKIE_NAME]
 
         serializer = self.get_serializer(data=data)
         try:
@@ -51,7 +69,25 @@ class CookieTokenRefreshView(TokenRefreshView):
 
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
         refresh_token = response.data["refresh"]
-        set_http_cookies(response, "refresh", refresh_token, True, False, 1)
+        access_token = response.data["access"]
+
+        set_http_cookies(
+            response,
+            settings.REFRESH_COOKIE_NAME,
+            refresh_token,
+            True,
+            False,
+            datetime.timedelta(days=1),
+        )
+        set_http_cookies(
+            response,
+            settings.ACCESS_COOKIE_NAME,
+            access_token,
+            True,
+            False,
+            datetime.timedelta(minutes=10),
+        )
         del response.data["refresh"]
+        del response.data["access"]
 
         return response

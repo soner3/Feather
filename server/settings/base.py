@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "phonenumber_field",
     "django_countries",
+    "celery",
 ]
 
 LOCAL_APPS = [
@@ -141,11 +142,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
 
-COOKIE_NAME = "refresh"
+REFRESH_COOKIE_NAME = "feather_refresh"
+ACCESS_COOKIE_NAME = "feather_access"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "apps.userauth.authentication.CustomAuthentication",
+        "apps.userauth.authentication.CookieJWTAuthentication",
     ),
 }
 
@@ -173,6 +175,9 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "ACTIVATION_URL": "auth/activate/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "users/password/reset/{uid}/{token}",
+    "EMAIL": {
+        "activation": "apps.userauth.emails.AsyncActivationEmail",
+    },
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -182,3 +187,16 @@ cloudinary.config(
     api_key=getenv("API_KEY"),
     api_secret=getenv("API_SECRET"),
 )
+
+CELERY_BROKER_URL = getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = getenv("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_RESULT_BACKEND_MAX_RETRIES = 10
+CELERY_TASK_SEND_SENT_EVENT = True
+CELERY_RESULT_EXTENDED = True
+CELERY_RESULT_BACKEND_ALWAYS_RETRY = True
+CELERY_TASK_TIME_LIMIT = 5 * 60
+CELERY_TASK_SOFT_TIME_LIMIT = 60
+CELERY_WORKER_SEND_TASK_EVENTS = True

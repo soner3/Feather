@@ -5,8 +5,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
-    path("", include("djoser.urls")),
     path("auth/", include("apps.userauth.urls")),
+    path("", include("apps.profiles.urls")),
+    path("posts/", include("apps.posts.urls")),
+    path("", include("djoser.urls")),
 ]
 
 admin.site.site_header = "Feather Admin"
