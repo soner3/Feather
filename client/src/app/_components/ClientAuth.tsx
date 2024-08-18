@@ -31,7 +31,6 @@ export default function ClientAuth({ children }: { children: ReactNode }) {
       if (!rotateRes.ok) {
         dispatch(setLogout());
         if (rotateRes.status === 401) {
-          toast.info("Please login.");
         } else {
           toast.info("Your session time is expired, please login again.");
         }

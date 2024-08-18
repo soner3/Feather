@@ -10,6 +10,7 @@ import FormHeader from "../FormHeader";
 import { useRouter } from "next/navigation";
 import { setLogin } from "@/app/_lib/features/authSlice";
 import InputComponent from "../InputComponent";
+import SubmitButton from "./SubmitButton";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -18,7 +19,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<TLoginSchema>({
     resolver: zodResolver(LoginSchema),
@@ -49,7 +50,7 @@ export default function LoginForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-40 flex w-1/2 flex-col gap-5 rounded-lg border border-green-500 p-4 text-black shadow-md dark:text-white"
+      className="md:mt-30 mt-20 flex w-1/2 flex-col gap-5 rounded-lg border border-green-500 p-4 duration-200"
     >
       <FormHeader />
       <InputComponent
@@ -74,13 +75,7 @@ export default function LoginForm() {
         error={errors.password}
         errorMessage={errors.password?.message}
       />
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="mx-auto w-1/2 items-center rounded-lg bg-green-600 p-2 text-white duration-300 hover:scale-105 active:scale-90"
-      >
-        {isSubmitting ? "Loading..." : "Login"}
-      </button>
+      <SubmitButton isSubmitting={isSubmitting} />
     </form>
   );
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import { FieldError, UseFormRegister } from "react-hook-form";
 
 type InputComponentType = {
