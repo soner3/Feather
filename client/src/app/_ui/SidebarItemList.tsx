@@ -4,12 +4,19 @@ import SidebarItem from "./SidebarItem";
 import { motion } from "framer-motion";
 import { useAppSelector } from "../_lib/hooks/reduxHooks";
 import SidebarFooter from "./SidebarFooter";
+import SidebarLogoutButton from "./SidebarLogoutButton";
 
 export interface sidebarListItemType {
   id: string;
   icon: ReactNode;
   title: string;
   href: string;
+}
+
+export interface sidebarLogoutButtonItemType {
+  id: string;
+  icon: ReactNode;
+  title: string;
 }
 
 const sidebarItems: sidebarListItemType[] = [
@@ -48,12 +55,11 @@ const sidebarFooterLoggedOut: sidebarListItemType[] = [
   },
 ];
 
-const sidebarFooterLoggedIn: sidebarListItemType[] = [
+const sidebarFooterLoggedIn: sidebarLogoutButtonItemType[] = [
   {
     id: "3",
     icon: <HiUserMinus className="size-6" />,
     title: "Logout",
-    href: "/auth/logout",
   },
 ];
 
@@ -110,13 +116,12 @@ export default function SidebarItemList() {
         exit="exit"
       >
         {isAuthenticated
-          ? sidebarFooterLoggedOut.map((item) => {
+          ? sidebarFooterLoggedIn.map((item) => {
               return (
-                <SidebarFooter
+                <SidebarLogoutButton
                   key={item.id}
                   icon={item.icon}
                   title={item.title}
-                  href={item.href}
                 />
               );
             })

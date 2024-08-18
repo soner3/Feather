@@ -92,22 +92,12 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-  flower:
-    container_name: flower
-    image: mher/flower
-    ports:
-      - "5555:5555"
-    command: celery -A server flower --port=5555 --broker=redis://redis:6379/0
-    depends_on:
-      - redis
-      - celery
-
   celery:
     container_name: celery
     build:
       context: .
       dockerfile: ./docker/local/server/Dockerfile
-    command: celery -A server worker --loglevel=info -Q tasks
+    command: celery -A server worker --hostname=server_worker --loglevel=info -Q tasks
     env_file:
       - ./.envs/.env.local
     volumes:
@@ -116,6 +106,14 @@ services:
       - server
       - rabbitmq
       - redis
+
+  flower:
+    container_name: flower
+    image: mher/flower
+    ports:
+      - 5555:5555
+    env_file:
+      - ./.envs/.env.local
 
 volumes:
   postgres_data: {}

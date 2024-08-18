@@ -1,4 +1,4 @@
-function applyTheme(): void {
+export function applyTheme(): void {
   if (
     localStorage.theme === "dark" ||
     (!("theme" in localStorage) &&

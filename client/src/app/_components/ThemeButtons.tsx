@@ -31,7 +31,7 @@ export default function ThemeButtons() {
       }}
     >
       <motion.button
-        className="cursor-pointer rounded-l-full border border-sky-500 bg-white p-2 px-3 shadow-lg hover:z-10 dark:bg-slate-900"
+        className="cursor-pointer rounded-l-full border border-green-500 bg-white p-2 px-3 shadow shadow-green-500 hover:z-10 dark:bg-slate-900"
         onClick={() => handleChangeTheme("light")}
         disabled={theme === "light"}
         whileHover={{
@@ -53,7 +53,7 @@ export default function ThemeButtons() {
         </svg>
       </motion.button>
       <motion.button
-        className="cursor-pointer rounded-r-full border border-sky-500 bg-white p-2 px-3 shadow-lg hover:z-10 dark:bg-slate-900"
+        className="cursor-pointer rounded-r-full border border-green-500 bg-white p-2 px-3 shadow shadow-green-500 hover:z-10 dark:bg-slate-900"
         onClick={() => handleChangeTheme("dark")}
         disabled={theme === "dark"}
         whileHover={{

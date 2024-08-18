@@ -4,7 +4,8 @@ const emailRegex = /^[a-zA-Z0-9_@.+-]/;
 
 export const LoginSchema = z.object({
   email: z.string().regex(emailRegex, {
-    message: "This field can only contain letters, digits, _, @, +, . and -",
+    message:
+      "This field is required and can only contain letters, digits, _, @, +, . and -",
   }),
   password: z
     .string()

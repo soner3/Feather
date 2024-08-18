@@ -18,7 +18,7 @@ export default function SidebarButton() {
     <>
       <motion.button
         onClick={() => dispatch(changeSidebar(!isOpen))}
-        className="z-10 rounded-full border-2 border-sky-500 p-2"
+        className="z-10 rounded-full border-2 border-green-500 p-2 shadow shadow-green-500"
         initial={{
           scale: 0,
           opacity: 0,

@@ -28,7 +28,7 @@ export default function SidebarFooter({ icon, title, href }: PropTypes) {
   return (
     <Link href={href}>
       <motion.li
-        className={`flex h-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-sky-500 dark:shadow-white ${path === href ? "shadow-xl shadow-sky-500 dark:shadow-white" : ""}`}
+        className={`flex h-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-green-500 ${path === href ? "shadow-md shadow-green-500" : ""}`}
         variants={variants}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}

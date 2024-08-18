@@ -6,7 +6,7 @@ export default function FormHeader() {
     <div className="mb-2 flex justify-center p-2">
       <Link href={"/"} className="flex items-center gap-3">
         <Image src={"/logo.png"} alt="Logo" width={32} height={32} />
-        <h2 className="text-3xl font-medium">Feather</h2>
+        <h2 className="text-3xl font-medium text-green-500">Feather</h2>
       </Link>
     </div>
   );
