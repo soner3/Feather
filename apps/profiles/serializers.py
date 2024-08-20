@@ -1,4 +1,3 @@
-from typing import Any
 from rest_framework import serializers
 from .models import Profile
 from apps.users.serializers import CurrentUserSerializer, UserPostsSerializer

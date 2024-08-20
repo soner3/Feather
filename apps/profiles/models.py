@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 class Profile(models.Model):
     pkid: models.BigAutoField = models.BigAutoField(primary_key=True, editable=False)
     id: models.UUIDField = models.UUIDField(
-        default=uuid.uuid4(), unique=True, editable=False
+        default=uuid.uuid4, unique=True, editable=False
     )
 
     # 1:1 Relationship to User

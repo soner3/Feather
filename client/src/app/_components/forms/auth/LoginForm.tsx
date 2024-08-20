@@ -38,7 +38,7 @@ export default function LoginForm() {
         dispatch(setLogin(response_data.username));
         toast.success("Login Successfull");
         reset();
-        router.push("/");
+        router.replace("/");
       }
     } catch {
       toast.dismiss();
@@ -75,7 +75,7 @@ export default function LoginForm() {
         error={errors.password}
         errorMessage={errors.password?.message}
       />
-      <SubmitButton isSubmitting={isSubmitting} />
+      <SubmitButton isSubmitting={isSubmitting} text="Login" />
     </form>
   );
 }

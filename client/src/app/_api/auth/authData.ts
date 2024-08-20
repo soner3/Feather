@@ -1,4 +1,7 @@
-import { TLoginSchema } from "@/app/_lib/validationSchemas";
+import {
+  TLoginSchema,
+  TRegisterUserSchema,
+} from "@/app/_lib/validationSchemas";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
@@ -46,17 +49,26 @@ export async function rotateToken(): Promise<Response> {
   return res;
 }
 
-// export async function verifyRefreshToken(): Promise<Response> {
-//   const res = await fetch("http://localhost:8080/auth/jwt/verify/", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     credentials: "include",
-//   });
+export async function createUser(data: TRegisterUserSchema) {
+  const res = await fetch("http://localhost:8080/users/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-//   return res;
-// }
+  return res;
+}
+
+export async function logout(): Promise<Response> {
+  const res = await fetch("http://localhost:8080/auth/jwt/delete/", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  return res;
+}
 
 export function isTokenExpired(refreshToken: string): boolean {
   const decodedToken: DecodedTokenType = jwtDecode(refreshToken);

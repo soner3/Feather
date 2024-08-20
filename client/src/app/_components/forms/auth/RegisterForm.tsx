@@ -10,6 +10,17 @@ import { toast } from "react-toastify";
 import InputComponent from "../InputComponent";
 import FormHeader from "../FormHeader";
 import SubmitButton from "./SubmitButton";
+import { createUser } from "@/app/_api/auth/authData";
+import { useState } from "react";
+
+interface ServerValidationType {
+  username: Array<string>;
+  email: Array<string>;
+  first_name: Array<string>;
+  last_name: Array<string>;
+  password: Array<string>;
+  re_password: Array<string>;
+}
 
 export default function RegisterForm() {
   const {
@@ -29,8 +40,44 @@ export default function RegisterForm() {
     },
   });
 
-  function onSubmit(data: TRegisterUserSchema) {
+  const [usernameError, setUsernameError] = useState<string | undefined>();
+  const [emailError, setEmailError] = useState<string | undefined>();
+  const [firstError, setFirstError] = useState<string | undefined>();
+  const [lastError, setLastError] = useState<string | undefined>();
+  const [passwordError, setPasswordError] = useState<string | undefined>();
+  const [re_passwordError, setRe_PasswordError] = useState<
+    string | undefined
+  >();
+
+  async function onSubmit(data: TRegisterUserSchema) {
     toast.loading("Loading...");
+    try {
+      const res = await createUser(data);
+      if (res.ok) {
+        toast.dismiss();
+        toast.success("User created An activation Mail has been send");
+        setEmailError(undefined);
+        setUsernameError(undefined);
+        setFirstError(undefined);
+        setLastError(undefined);
+        setPasswordError(undefined);
+        setRe_PasswordError(undefined);
+        reset();
+      } else {
+        toast.dismiss();
+        toast.error("Something went wrong");
+        const data: ServerValidationType = await res.json();
+        setUsernameError(data.username[0]);
+        setEmailError(data.email[0]);
+        setFirstError(data.first_name[0]);
+        setLastError(data.last_name[0]);
+        setPasswordError(data.password[0]);
+        setRe_PasswordError(data.re_password[0]);
+      }
+    } catch (error) {
+      toast.dismiss();
+      toast.error("An error occurred during registration");
+    }
   }
 
   return (
@@ -49,8 +96,10 @@ export default function RegisterForm() {
           plcaeholder="Username"
           register={register}
           registerSchema="username"
-          error={errors.username}
-          errorMessage={errors.username?.message}
+          error={usernameError ? usernameError : errors.username}
+          errorMessage={
+            usernameError ? usernameError : errors.username?.message
+          }
         />
         <InputComponent
           labelValue="Email"
@@ -60,8 +109,8 @@ export default function RegisterForm() {
           plcaeholder="Email"
           register={register}
           registerSchema="email"
-          error={errors.email}
-          errorMessage={errors.email?.message}
+          error={emailError ? emailError : errors.email}
+          errorMessage={emailError ? emailError : errors.email?.message}
         />
         <InputComponent
           labelValue="First Name"
@@ -71,8 +120,8 @@ export default function RegisterForm() {
           plcaeholder="First Name"
           register={register}
           registerSchema="first_name"
-          error={errors.first_name}
-          errorMessage={errors.first_name?.message}
+          error={firstError ? firstError : errors.first_name}
+          errorMessage={firstError ? firstError : errors.first_name?.message}
         />
 
         <InputComponent
@@ -83,8 +132,10 @@ export default function RegisterForm() {
           plcaeholder="Password"
           register={register}
           registerSchema="password"
-          error={errors.password}
-          errorMessage={errors.password?.message}
+          error={passwordError ? passwordError : errors.password}
+          errorMessage={
+            passwordError ? passwordError : errors.password?.message
+          }
         />
         <InputComponent
           labelValue="Last Name"
@@ -94,8 +145,8 @@ export default function RegisterForm() {
           plcaeholder="Last Name"
           register={register}
           registerSchema="last_name"
-          error={errors.last_name}
-          errorMessage={errors.last_name?.message}
+          error={lastError ? lastError : errors.last_name}
+          errorMessage={lastError ? lastError : errors.last_name?.message}
         />
         <InputComponent
           labelValue="Confirm Password"
@@ -105,11 +156,13 @@ export default function RegisterForm() {
           plcaeholder="Confirm Password"
           register={register}
           registerSchema="re_password"
-          error={errors.re_password}
-          errorMessage={errors.re_password?.message}
+          error={re_passwordError ? re_passwordError : errors.re_password}
+          errorMessage={
+            re_passwordError ? re_passwordError : errors.re_password?.message
+          }
         />
       </div>
-      <SubmitButton isSubmitting={isSubmitting} />
+      <SubmitButton isSubmitting={isSubmitting} text="Register" />
     </form>
   );
 }

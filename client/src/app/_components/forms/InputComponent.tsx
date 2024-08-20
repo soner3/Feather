@@ -5,7 +5,7 @@ type InputComponentType = {
   inputId: string;
   labelValue: string;
   plcaeholder: string;
-  error: FieldError | undefined;
+  error: FieldError | undefined | string;
   errorMessage: string | undefined;
   register: UseFormRegister<any>;
   registerSchema: string;
