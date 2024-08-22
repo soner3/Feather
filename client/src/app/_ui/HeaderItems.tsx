@@ -1,5 +1,3 @@
-"use client";
-
 import SidebarButton from "./SidebarButton";
 import Sidebar from "./Sidebar";
 import Logo from "./Logo";

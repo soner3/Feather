@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import ClientAuth from "./ClientAuth";
+import StoreProvider from "../_lib/StoreProvider";
+import Toast from "./Toast";
 
 export default async function ClientAuthWrapper({
   children,
@@ -8,7 +10,10 @@ export default async function ClientAuthWrapper({
 }) {
   return (
     <>
-      <ClientAuth>{children}</ClientAuth>
+      <Toast />
+      <StoreProvider>
+        <ClientAuth>{children}</ClientAuth>
+      </StoreProvider>
     </>
   );
 }

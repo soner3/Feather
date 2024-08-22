@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import InputComponent from "../InputComponent";
 import FormHeader from "../FormHeader";
 import SubmitButton from "./SubmitButton";
-import { createUser } from "@/app/_api/auth/authData";
+import { createUser, resendActivationEmail } from "@/app/_api/auth/authData";
 import { useState } from "react";
 
 interface ServerValidationType {
@@ -24,7 +24,6 @@ interface ServerValidationType {
 
 export default function RegisterForm() {
   const {
-    reset,
     formState: { isSubmitting, errors },
     register,
     handleSubmit,
@@ -49,34 +48,55 @@ export default function RegisterForm() {
     string | undefined
   >();
 
+  const [resendEmail, setResendEmail] = useState(false);
+
   async function onSubmit(data: TRegisterUserSchema) {
     toast.loading("Loading...");
-    try {
-      const res = await createUser(data);
-      if (res.ok) {
+    if (resendEmail) {
+      const res = await resendActivationEmail(data.email);
+      if (res?.ok) {
         toast.dismiss();
-        toast.success("User created An activation Mail has been send");
-        setEmailError(undefined);
-        setUsernameError(undefined);
-        setFirstError(undefined);
-        setLastError(undefined);
-        setPasswordError(undefined);
-        setRe_PasswordError(undefined);
-        reset();
+        toast.success("Activation Mail got resended");
       } else {
-        toast.dismiss();
-        toast.error("Something went wrong");
-        const data: ServerValidationType = await res.json();
-        setUsernameError(data.username[0]);
-        setEmailError(data.email[0]);
-        setFirstError(data.first_name[0]);
-        setLastError(data.last_name[0]);
-        setPasswordError(data.password[0]);
-        setRe_PasswordError(data.re_password[0]);
+        const data: ServerValidationType | undefined = await res?.json();
+        if (data) {
+          setEmailError(data.email[0]);
+        }
       }
-    } catch (error) {
-      toast.dismiss();
-      toast.error("An error occurred during registration");
+      return;
+    } else {
+      try {
+        const res = await createUser(data);
+        if (res.ok) {
+          toast.dismiss();
+          toast.success("User created An activation Mail has been send");
+          setEmailError(undefined);
+          setUsernameError(undefined);
+          setFirstError(undefined);
+          setLastError(undefined);
+          setPasswordError(undefined);
+          setRe_PasswordError(undefined);
+          setResendEmail(true);
+        } else {
+          toast.dismiss();
+          toast.error("Something went wrong");
+          const data: ServerValidationType = await res.json();
+          setUsernameError(data.username[0]);
+          setEmailError(data.email[0]);
+          setFirstError(data.first_name[0]);
+          setLastError(data.last_name[0]);
+          setPasswordError(data.password[0]);
+          setRe_PasswordError(data.re_password[0]);
+        }
+      } catch (error) {
+        toast.dismiss();
+        toast.error("An error occurred during registration");
+      }
+    }
+  }
+
+  async function handleResendActivationMail(data: TRegisterUserSchema) {
+    if (resendEmail) {
     }
   }
 
@@ -162,7 +182,10 @@ export default function RegisterForm() {
           }
         />
       </div>
-      <SubmitButton isSubmitting={isSubmitting} text="Register" />
+      <SubmitButton
+        isSubmitting={isSubmitting}
+        text={`${resendEmail ? "Resend Activation Mail" : "Register"}`}
+      />
     </form>
   );
 }

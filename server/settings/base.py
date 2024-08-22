@@ -175,8 +175,13 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "ACTIVATION_URL": "auth/activate/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "users/password/reset/{uid}/{token}",
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "SEND_CONFIRMATION_EMAIL": True,
     "EMAIL": {
         "activation": "apps.userauth.emails.AsyncActivationEmail",
+        "confirmation": "apps.userauth.emails.AsyncConfirmationEmail",
+        "password_reset": "apps.userauth.emails.AsyncPasswordResetEmail",
+        "password_changed_confirmation": "apps.userauth.emails.AsyncPasswordChangedConfirmationEmail",
     },
 }
 

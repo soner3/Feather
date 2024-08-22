@@ -18,35 +18,43 @@ type UserDoesNotExist = {
 };
 
 export async function login(data: TLoginSchema): Promise<UsernameType | null> {
-  const res = await fetch("http://localhost:8080/auth/jwt/create/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    const res = await fetch("http://localhost:8080/auth/jwt/create/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-  if (res.ok) {
-    const responseData: UsernameType = await res.json();
-    return responseData;
-  } else {
-    const responseData: UserDoesNotExist = await res.json();
-    toast.dismiss();
-    toast.error(responseData.non_field_errors[0]);
+    if (res.ok) {
+      const responseData: UsernameType = await res.json();
+      return responseData;
+    } else {
+      const responseData: UserDoesNotExist = await res.json();
+      toast.dismiss();
+      toast.error(responseData.non_field_errors[0]);
+      return null;
+    }
+  } catch (error) {
     return null;
   }
 }
 
-export async function rotateToken(): Promise<Response> {
-  const res = await fetch("http://localhost:8080/auth/jwt/refresh/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+export async function rotateToken(): Promise<Response | null> {
+  try {
+    const res = await fetch("http://localhost:8080/auth/jwt/refresh/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
 
-  return res;
+    return res;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function createUser(data: TRegisterUserSchema) {
@@ -68,6 +76,27 @@ export async function logout(): Promise<Response> {
   });
 
   return res;
+}
+
+export async function resendActivationEmail(
+  email: string,
+): Promise<Response | undefined> {
+  const data = {
+    email: email,
+  };
+  try {
+    const res = await fetch("http://localhost:8080/users/resend_activation/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(res.status);
+    return res;
+  } catch (error) {
+    toast.error("An Error Occurred while resending activation email");
+  }
 }
 
 export function isTokenExpired(refreshToken: string): boolean {

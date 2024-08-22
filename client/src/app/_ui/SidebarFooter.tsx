@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,7 +28,7 @@ export default function SidebarFooter({ icon, title, href }: PropTypes) {
   };
 
   return (
-    <Link href={href}>
+    <Link href={href} prefetch replace>
       <motion.li
         className={`flex h-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-green-500 ${path === href ? "shadow-md shadow-green-500" : ""}`}
         variants={variants}

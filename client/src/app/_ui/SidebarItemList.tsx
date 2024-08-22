@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode } from "react";
 import { HiHome, HiUserPlus, HiUserCircle, HiUserMinus } from "react-icons/hi2";
 import SidebarItem from "./SidebarItem";

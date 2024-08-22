@@ -11,9 +11,9 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.conf.task_queues = [
     Queue(
-        "tasks",
-        Exchange("tasks"),
-        routing_key="tasks",
+        "email_tasks",
+        Exchange("email_tasks"),
+        routing_key="email_tasks",
         queue_arguments={"x-max-priority": 10},
     ),
 ]

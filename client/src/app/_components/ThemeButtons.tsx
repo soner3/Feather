@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { applyDarkTheme, applyLightTheme } from "../_lib/theme";
 import { motion } from "framer-motion";

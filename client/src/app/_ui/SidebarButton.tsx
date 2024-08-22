@@ -1,3 +1,5 @@
+"use client";
+
 import { HiMiniBars4 } from "react-icons/hi2";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "../_lib/hooks/reduxHooks";
