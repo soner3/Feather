@@ -20,6 +20,7 @@ services:
       - client
       - server
       - mailpit
+    privileged: true
     networks:
       - feather_network
 
@@ -39,6 +40,7 @@ services:
     depends_on:
       - postgres
       - mailpit
+    privileged: true
     networks:
       - feather_network
 
@@ -51,6 +53,7 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    privileged: true
     networks:
       - feather_network
 
@@ -68,6 +71,7 @@ services:
     volumes:
       - ./client/src:/app/src
       - /app/node_modules
+    privileged: true
     networks:
       - feather_network
 
@@ -84,6 +88,7 @@ services:
       MP_DATA_FILE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    privileged: true
     networks:
       - feather_network
 
@@ -96,6 +101,7 @@ services:
       - redis_data:/data
     depends_on:
       - server
+    privileged: true
     networks:
       - feather_network
 
@@ -105,8 +111,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    privileged: true
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - feather_network
 
   celery:
     container_name: celery
@@ -122,6 +131,7 @@ services:
       - server
       - rabbitmq
       - redis
+    privileged: true
     networks:
       - feather_network
 
@@ -132,6 +142,7 @@ services:
       - 5555:5555
     env_file:
       - ./.envs/.env.local
+    privileged: true
     networks:
       - feather_network
 
