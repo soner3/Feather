@@ -8,15 +8,26 @@ import InputComponent from "../InputComponent";
 import SubmitButton from "./SubmitButton";
 import { login } from "@/data/authData";
 import { setLogin } from "@/lib/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/reduxHooks";
+import { useAppDispatch } from "@/lib/reduxHooks";
 import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const isAuth = useAppSelector((store) => store.auth.isAuthenticated);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const name = localStorage.getItem("username");
+    if (name) {
+      setIsAuth(true);
+      router.replace("/");
+    } else {
+      setIsAuth(false);
+    }
+  }, [router, isAuth]);
 
   const {
     register,
@@ -39,8 +50,9 @@ export default function LoginForm() {
         toast.dismiss();
         localStorage.setItem("username", response_data.username);
         dispatch(setLogin(response_data.username));
-        toast.success("Login Successfull");
         router.replace("/");
+        setIsAuth(true);
+        toast.success("Login Successfull");
         reset();
       }
     } catch {

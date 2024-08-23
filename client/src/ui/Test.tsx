@@ -1,8 +1,17 @@
 "use client";
 
-import { useAppSelector } from "@/lib/reduxHooks";
+import { useEffect, useState } from "react";
 
 export default function Test() {
-  const username = useAppSelector((store) => store.auth.username);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const name = localStorage.getItem("username");
+
+    if (name) {
+      setUsername(name);
+    }
+  }, []);
+
   return <div>{username}</div>;
 }
