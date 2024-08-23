@@ -4,13 +4,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from .models import Post
 from .serializer import PostSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework import permissions
 
 
 class PostsList(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         return super().get(request, *args, **kwargs)

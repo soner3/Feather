@@ -4,9 +4,9 @@ import { ReactNode } from "react";
 import { HiHome, HiUserPlus, HiUserCircle, HiUserMinus } from "react-icons/hi2";
 import SidebarItem from "./SidebarItem";
 import { motion } from "framer-motion";
-import { useAppSelector } from "../_lib/hooks/reduxHooks";
 import SidebarFooter from "./SidebarFooter";
 import SidebarLogoutButton from "./SidebarLogoutButton";
+import { useAppSelector } from "@/lib/reduxHooks";
 
 export interface sidebarListItemType {
   id: string;

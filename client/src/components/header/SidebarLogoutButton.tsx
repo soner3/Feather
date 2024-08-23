@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
-import { useAppDispatch } from "../_lib/hooks/reduxHooks";
-import { logout } from "../_api/auth/authData";
-import { toast } from "react-toastify";
-import { setLogout } from "../_lib/features/authSlice";
 import Link from "next/link";
+import { useAppDispatch } from "@/lib/reduxHooks";
+import { logout } from "@/data/authData";
+import { setLogout } from "@/lib/features/auth/authSlice";
+import { toast } from "react-toastify";
 
 interface PropTypes {
   icon: ReactNode;
@@ -33,6 +33,7 @@ export default function SidebarLogoutButton({ icon, title }: PropTypes) {
     const res = await logout();
 
     if (res.ok) {
+      localStorage.removeItem("username");
       dispatch(setLogout());
       toast.success("Logout successfull");
     } else {

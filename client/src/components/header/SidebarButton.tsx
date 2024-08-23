@@ -2,9 +2,9 @@
 
 import { HiMiniBars4 } from "react-icons/hi2";
 import { HiOutlineXMark } from "react-icons/hi2";
-import { useAppDispatch, useAppSelector } from "../_lib/hooks/reduxHooks";
-import { changeSidebar } from "../_lib/features/sidebarSlice";
 import { motion } from "framer-motion";
+import { useAppDispatch, useAppSelector } from "@/lib/reduxHooks";
+import { changeSidebar } from "@/lib/features/sidebar/sidebarSlice";
 
 export default function SidebarButton() {
   const dispatch = useAppDispatch();

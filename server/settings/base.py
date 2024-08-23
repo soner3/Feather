@@ -185,7 +185,13 @@ DJOSER = {
     },
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 cloudinary.config(
     cloud_name=getenv("CLOUD_NAME"),

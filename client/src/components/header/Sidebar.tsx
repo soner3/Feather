@@ -2,11 +2,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { useAppSelector } from "../_lib/hooks/reduxHooks";
 import SidebarItemList from "./SidebarItemList";
+import { useAppDispatch, useAppSelector } from "@/lib/reduxHooks";
+import { changeSidebar } from "@/lib/features/sidebar/sidebarSlice";
 
 export default function Sidebar() {
   const isOpen = useAppSelector((store) => store.sidebar.isOpen);
+  const dispatch = useAppDispatch();
 
   const sidebarVariants = {
     closed: {
@@ -30,6 +32,7 @@ export default function Sidebar() {
       variants={sidebarVariants}
       initial="closed"
       animate={isOpen ? "open" : "closed"}
+      onMouseLeave={() => dispatch(changeSidebar(false))}
     >
       {isOpen && <SidebarItemList />}
     </motion.nav>

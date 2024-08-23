@@ -201,3 +201,4 @@ client/next-env.d.ts
 static
 
 .envs/.env.local
+!client/src/lib

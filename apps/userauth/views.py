@@ -10,6 +10,8 @@ from rest_framework.views import APIView
 from .serializers import CustomTokenObtainPairSerializer
 from rest_framework.request import Request
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.tokens import RefreshToken
+from apps.users.models import User
 from django.conf import settings
 
 

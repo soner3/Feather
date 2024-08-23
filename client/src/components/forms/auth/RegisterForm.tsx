@@ -2,16 +2,17 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  RegisterUserSchema,
-  TRegisterUserSchema,
-} from "@/app/_lib/validationSchemas";
+
 import { toast } from "react-toastify";
 import InputComponent from "../InputComponent";
 import FormHeader from "../FormHeader";
 import SubmitButton from "./SubmitButton";
-import { createUser, resendActivationEmail } from "@/app/_api/auth/authData";
 import { useState } from "react";
+import { resendActivationEmail, createUser } from "@/data/authData";
+import {
+  TRegisterUserSchema,
+  RegisterUserSchema,
+} from "@/lib/validationSchemas";
 
 interface ServerValidationType {
   username: Array<string>;
@@ -49,11 +50,12 @@ export default function RegisterForm() {
   >();
 
   const [resendEmail, setResendEmail] = useState(false);
+  const [emailField, setEmailField] = useState("");
 
   async function onSubmit(data: TRegisterUserSchema) {
     toast.loading("Loading...");
     if (resendEmail) {
-      const res = await resendActivationEmail(data.email);
+      const res = await resendActivationEmail(emailField);
       if (res?.ok) {
         toast.dismiss();
         toast.success("Activation Mail got resended");
@@ -70,6 +72,7 @@ export default function RegisterForm() {
         if (res.ok) {
           toast.dismiss();
           toast.success("User created An activation Mail has been send");
+          setEmailField(data.email);
           setEmailError(undefined);
           setUsernameError(undefined);
           setFirstError(undefined);
@@ -92,11 +95,6 @@ export default function RegisterForm() {
         toast.dismiss();
         toast.error("An error occurred during registration");
       }
-    }
-  }
-
-  async function handleResendActivationMail(data: TRegisterUserSchema) {
-    if (resendEmail) {
     }
   }
 

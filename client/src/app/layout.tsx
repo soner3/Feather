@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import { Signika } from "next/font/google";
 import "./globals.css";
-import Header from "./_ui/Header";
-import ClientAuthWrapper from "./_components/ClientAuthWrapper";
-import Toast from "./_components/Toast";
-import StoreProvider from "./_lib/StoreProvider";
+import Header from "@/components/header/Header";
+import StoreProvider from "./StoreProvider";
+import Toast from "@/components/Toast";
+import ClientAuth from "@/components/ClientAuth";
 
 const inter = Signika({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Feather",
-  description: "Chat Forum",
+  title: {
+    template: "%s | Feather",
+    default: "Feather",
+  },
 };
 
 export default function RootLayout({
@@ -23,12 +25,11 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-white text-green-500 duration-500 dark:bg-slate-900`}
       >
-        <Toast />
         <StoreProvider>
-          <ClientAuthWrapper>
-            <Header />
-            <main className="text-black dark:text-white">{children}</main>
-          </ClientAuthWrapper>
+          <ClientAuth />
+          <Toast />
+          <Header />
+          <main className="text-black dark:text-white">{children}</main>
         </StoreProvider>
       </body>
     </html>

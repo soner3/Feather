@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { toast } from "react-toastify";
 
 export default async function page({
   params,

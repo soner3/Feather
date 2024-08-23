@@ -1,7 +1,4 @@
-import {
-  TLoginSchema,
-  TRegisterUserSchema,
-} from "@/app/_lib/validationSchemas";
+import { TLoginSchema, TRegisterUserSchema } from "@/lib/validationSchemas";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
@@ -24,6 +21,7 @@ export async function login(data: TLoginSchema): Promise<UsernameType | null> {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(data),
     });
 

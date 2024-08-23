@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { applyDarkTheme, applyLightTheme } from "../_lib/theme";
 import { motion } from "framer-motion";
+import { applyDarkTheme, applyLightTheme, applyTheme } from "@/lib/theme";
 
 export default function ThemeButtons() {
   const [theme, setTheme] = useState<string>("");

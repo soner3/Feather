@@ -1,20 +1,22 @@
 "use client";
 
-import { login } from "@/app/_api/auth/authData";
-import { useAppDispatch } from "@/app/_lib/hooks/reduxHooks";
-import { LoginSchema, TLoginSchema } from "@/app/_lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import FormHeader from "../FormHeader";
-import { setLogin } from "@/app/_lib/features/authSlice";
 import InputComponent from "../InputComponent";
 import SubmitButton from "./SubmitButton";
+import { login } from "@/data/authData";
+import { setLogin } from "@/lib/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/reduxHooks";
+import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const isAuth = useAppSelector((store) => store.auth.isAuthenticated);
 
   const {
     register,
@@ -35,10 +37,11 @@ export default function LoginForm() {
       const response_data = await login(data);
       if (response_data) {
         toast.dismiss();
+        localStorage.setItem("username", response_data.username);
         dispatch(setLogin(response_data.username));
         toast.success("Login Successfull");
-        reset();
         router.replace("/");
+        reset();
       }
     } catch {
       toast.dismiss();
@@ -76,6 +79,14 @@ export default function LoginForm() {
         errorMessage={errors.password?.message}
       />
       <SubmitButton isSubmitting={isSubmitting} text="Login" />
+      {isAuth && (
+        <Link
+          href={"/"}
+          className="mx-auto my-1 w-1/2 rounded-lg bg-green-600 p-2 text-center text-white duration-300 hover:scale-105 active:scale-90"
+        >
+          Go to Homepage
+        </Link>
+      )}
     </form>
   );
 }
