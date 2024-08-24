@@ -5,6 +5,7 @@ import Header from "@/components/header/Header";
 import StoreProvider from "./StoreProvider";
 import Toast from "@/components/Toast";
 import ClientAuth from "@/components/ClientAuth";
+import ApplyTheme from "@/ui/ApplyTheme";
 
 const inter = Signika({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
         className={`${inter.className} bg-white text-green-500 duration-500 dark:bg-slate-900`}
       >
         <StoreProvider>
+          <ApplyTheme />
           <ClientAuth />
           <Toast />
           <Header />

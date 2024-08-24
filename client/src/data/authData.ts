@@ -1,5 +1,6 @@
 import { TLoginSchema, TRegisterUserSchema } from "@/lib/validationSchemas";
 import { jwtDecode } from "jwt-decode";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { toast } from "react-toastify";
 
 type UsernameType = {
@@ -12,6 +13,7 @@ type DecodedTokenType = {
 
 type UserDoesNotExist = {
   non_field_errors: Array<string>;
+  detail: string;
 };
 
 export async function login(data: TLoginSchema): Promise<UsernameType | null> {
@@ -28,6 +30,11 @@ export async function login(data: TLoginSchema): Promise<UsernameType | null> {
     if (res.ok) {
       const responseData: UsernameType = await res.json();
       return responseData;
+    } else if (res.status === 401) {
+      const responseData: UserDoesNotExist = await res.json();
+      toast.dismiss();
+      toast.error(responseData.detail);
+      return null;
     } else {
       const responseData: UserDoesNotExist = await res.json();
       toast.dismiss();
@@ -38,6 +45,20 @@ export async function login(data: TLoginSchema): Promise<UsernameType | null> {
     return null;
   }
 }
+
+// export async function verifyRefreshToken(
+//   refreshToken: RequestCookie,
+// ): Promise<number> {
+//   const res = await fetch("http://nginx/auth/jwt/verify/", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Cookie: `feather_refresh=${refreshToken.value}`,
+//     },
+//     credentials: "include",
+//   });
+//   return res.status;
+// }
 
 export async function rotateToken(): Promise<Response | null> {
   try {

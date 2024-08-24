@@ -5,13 +5,12 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView,
 )
 from rest_framework.views import APIView
 from .serializers import CustomTokenObtainPairSerializer
 from rest_framework.request import Request
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework_simplejwt.tokens import RefreshToken
-from apps.users.models import User
 from django.conf import settings
 
 
@@ -29,6 +28,7 @@ def set_http_cookies(
         expires=datetime.datetime.now() + expire_days,
         httponly=http_only,
         secure=secure,
+        samesite="Lax",
     )
 
 
@@ -56,8 +56,8 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             False,
             datetime.timedelta(minutes=10),
         )
-        del response.data["refresh"]
-        del response.data["access"]
+        response.data.pop("refresh", None)
+        response.data.pop("access", None)
 
         return response
 
@@ -66,6 +66,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         data = request.data.copy()
+
         try:
             data["refresh"] = request.COOKIES[settings.REFRESH_COOKIE_NAME]
         except KeyError:
@@ -97,10 +98,25 @@ class CookieTokenRefreshView(TokenRefreshView):
             False,
             datetime.timedelta(minutes=10),
         )
-        del response.data["refresh"]
-        del response.data["access"]
+        response.data.pop("refresh", None)
+        response.data.pop("access", None)
 
         return response
+
+
+class CookieTokenVerifyView(TokenVerifyView):
+
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        data = request.data.copy()
+        data["token"] = request.COOKIES[settings.REFRESH_COOKIE_NAME]
+        serializer = self.get_serializer(data=data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class CookieTokenDeleteView(APIView):
@@ -109,7 +125,10 @@ class CookieTokenDeleteView(APIView):
     def get(self, request: Request):
 
         response = Response(data=request.data, status=status.HTTP_200_OK)
-        response.delete_cookie(settings.REFRESH_COOKIE_NAME)
-        response.delete_cookie(settings.ACCESS_COOKIE_NAME)
+        try:
+            response.delete_cookie(settings.REFRESH_COOKIE_NAME)
+            response.delete_cookie(settings.ACCESS_COOKIE_NAME)
+        except KeyError:
+            return Response(status=status.HTTP_202_ACCEPTED)
 
         return response

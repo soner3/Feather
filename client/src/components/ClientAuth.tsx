@@ -3,7 +3,6 @@
 import { rotateToken } from "@/data/authData";
 import { setLogin, setLogout } from "@/lib/features/auth/authSlice";
 import { useAppDispatch } from "@/lib/reduxHooks";
-import { applyTheme } from "@/lib/theme";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -38,7 +37,6 @@ export default function ClientAuth() {
       }
     }
 
-    applyTheme();
     rotateAllToken();
 
     const interval = setInterval(

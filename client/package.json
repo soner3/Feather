@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "cookies-next": "^4.2.1",
     "framer-motion": "^11.3.29",
     "jwt-decode": "^4.0.0",
     "next": "14.2.6",

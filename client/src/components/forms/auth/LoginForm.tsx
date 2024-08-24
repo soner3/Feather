@@ -19,16 +19,6 @@ export default function LoginForm() {
   const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
 
-  useEffect(() => {
-    const name = localStorage.getItem("username");
-    if (name) {
-      setIsAuth(true);
-      router.replace("/");
-    } else {
-      setIsAuth(false);
-    }
-  }, [router, isAuth]);
-
   const {
     register,
     handleSubmit,
