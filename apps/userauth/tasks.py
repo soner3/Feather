@@ -2,14 +2,13 @@ from celery import shared_task
 from django.core.mail import send_mail
 
 
-@shared_task(queue="email_tasks")
+@shared_task(queue="email_tasks", ignore_result=True)
 def send_activation_mail(
     subject: str,
     message: str,
     from_email: str | None,
     to: list[str],
     html_message=str | None,
-    priority=None,
 ):
     send_mail(
         subject=subject,
@@ -21,14 +20,13 @@ def send_activation_mail(
     )
 
 
-@shared_task(queue="email_tasks")
+@shared_task(queue="email_tasks", ignore_result=True)
 def send_confirmation_mail(
     subject: str,
     message: str,
     from_email: str | None,
     to: list[str],
     html_message=str | None,
-    priority=None,
 ):
     send_mail(
         subject=subject,
@@ -40,14 +38,13 @@ def send_confirmation_mail(
     )
 
 
-@shared_task(queue="email_tasks")
+@shared_task(queue="email_tasks", ignore_result=True)
 def send_password_reset_mail(
     subject: str,
     message: str,
     from_email: str | None,
     to: list[str],
     html_message=str | None,
-    priority=None,
 ):
     send_mail(
         subject=subject,
@@ -59,14 +56,13 @@ def send_password_reset_mail(
     )
 
 
-@shared_task(queue="email_tasks")
+@shared_task(queue="email_tasks", ignore_result=True)
 def send_password_reset_confirmation_mail(
     subject: str,
     message: str,
     from_email: str | None,
     to: list[str],
     html_message=str | None,
-    priority=None,
 ):
     send_mail(
         subject=subject,

@@ -102,10 +102,10 @@ export default function RegisterForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="md:mt-30 mt-20 flex w-4/5 flex-col gap-5 rounded-lg border border-green-500 p-4 duration-200"
+      className="md:mt-30 mt-20 flex w-4/5 flex-col rounded-lg border border-green-500 p-3 duration-200"
     >
       <FormHeader />
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         <InputComponent
           labelValue="Username"
           required

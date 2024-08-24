@@ -12,7 +12,7 @@ import { useAppDispatch } from "@/lib/reduxHooks";
 import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -55,9 +55,18 @@ export default function LoginForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="md:mt-30 mt-20 flex w-1/2 flex-col gap-5 rounded-lg border border-green-500 p-4 duration-200"
+      className="md:mt-30 mt-20 flex w-1/2 flex-col rounded-lg border border-green-500 p-4 duration-200"
     >
       <FormHeader />
+      <p className="text-center">
+        No Account?{" "}
+        <Link
+          className="text-green-500 hover:text-green-600 hover:underline"
+          href={"/auth/register/"}
+        >
+          Register
+        </Link>
+      </p>
       <InputComponent
         labelValue="Username or Email"
         inputId="loginEmail"

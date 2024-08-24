@@ -26,7 +26,7 @@ export default function InputComponent({
   required,
 }: InputComponentType) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col p-2">
       <label htmlFor={inputId} className={`pl-2 ${error ? "label-error" : ""}`}>
         {labelValue} {required && "*"}
       </label>

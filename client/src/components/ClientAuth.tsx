@@ -12,24 +12,29 @@ export default function ClientAuth() {
   const router = useRouter();
 
   useEffect(() => {
+    const username = localStorage.getItem("username");
+
+    if (username) {
+      dispatch(setLogin(username));
+    } else {
+      dispatch(setLogout());
+      if (!path.startsWith("/auth")) {
+        router.replace("/auth/login/");
+      }
+    }
+
     async function rotateAllToken() {
       const res = await rotateToken();
 
       if (!res) {
+        dispatch(setLogout());
+        if (!path.startsWith("/auth")) {
+          router.replace("/auth/login/");
+        }
         return;
       }
 
-      if (res.ok) {
-        const username = localStorage.getItem("username");
-        if (username) {
-          dispatch(setLogin(username));
-        } else {
-          dispatch(setLogout());
-          if (!path.startsWith("/auth")) {
-            router.replace("/auth/login/");
-          }
-        }
-      } else {
+      if (!res.ok) {
         dispatch(setLogout());
         if (!path.startsWith("/auth")) {
           router.replace("/auth/login/");

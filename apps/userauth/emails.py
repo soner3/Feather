@@ -18,7 +18,7 @@ class AsyncActivationEmail(ActivationEmail):
         self.render()
 
         send_activation_mail.delay(
-            self.subject, self.body, self.from_email, to, self.html, priority=7
+            self.subject, self.body, self.from_email, to, self.html
         )
 
 
@@ -37,7 +37,7 @@ class AsyncPasswordResetEmail(PasswordResetEmail):
         self.render()
 
         send_password_reset_mail.delay(
-            self.subject, self.body, self.from_email, to, self.html, priority=6
+            self.subject, self.body, self.from_email, to, self.html
         )
 
 
