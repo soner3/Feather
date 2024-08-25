@@ -17,7 +17,7 @@ interface ServerValidationType {
   email: Array<string>;
 }
 
-export default function PasswordResetForm() {
+export default function PasswordResetRequestForm() {
   const {
     register,
     handleSubmit,
@@ -52,7 +52,7 @@ export default function PasswordResetForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="md:mt-30 mt-20 flex w-3/4 flex-col rounded-lg border border-green-500 p-4 duration-200 md:w-1/2"
+      className="flex w-3/4 flex-col rounded-lg border border-green-500 p-4 shadow-lg shadow-green-500 duration-300 md:w-1/2"
     >
       <FormHeader />
       <InputComponent

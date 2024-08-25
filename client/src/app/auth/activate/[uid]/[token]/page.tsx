@@ -18,27 +18,21 @@ export default async function page({
   });
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <div className="flex flex-1 items-center justify-center shadow-xl">
-        <div className="mb-2 flex h-96 w-1/2 flex-col gap-5 rounded-xl bg-green-500 text-center text-3xl font-bold text-white shadow-2xl">
-          <div>
-            <h1 className="mt-36">
-              {res.ok
-                ? "User Activated"
-                : res.status === 403
-                  ? "User Has Already Been Activated"
-                  : "The Given Credentials Are Not Valid"}
-            </h1>
-          </div>
-          {res.ok && (
-            <Link href={"/auth/login/"}>
-              <button className="mx-auto w-1/2 items-center rounded-lg bg-green-800 p-2 text-white duration-300 hover:scale-105 active:scale-90">
-                Login
-              </button>
-            </Link>
-          )}
-        </div>
+    <section className="flex flex-1 items-center justify-center text-3xl font-medium">
+      <div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-3 rounded-lg bg-green-500 p-4 text-white shadow-2xl shadow-black">
+        <h2 className="">
+          {res.ok
+            ? "User Activated"
+            : res.status === 403
+              ? "User Has Already Been Activated"
+              : "The Given Credentials Are Not Valid"}
+        </h2>
+        <Link href={"/auth/login/"}>
+          <button className="my-3 w-full rounded-lg bg-green-800 p-2 duration-300 hover:scale-105 active:scale-90 active:bg-green-900">
+            <p className="px-12">Login</p>
+          </button>
+        </Link>
       </div>
-    </div>
+    </section>
   );
 }

@@ -24,16 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.className} bg-white text-green-500 duration-500 dark:bg-slate-900`}
+        className={`${inter.className} flex h-screen flex-col bg-white text-black duration-500 dark:bg-slate-900 dark:text-white`}
       >
         <StoreProvider>
           <ApplyTheme />
           <ClientAuth />
           <Toast />
           <Header />
-          <main className="bg-white text-black dark:bg-slate-900 dark:text-white">
-            {children}
-          </main>
+          <main className="flex flex-1">{children}</main>
         </StoreProvider>
       </body>
     </html>

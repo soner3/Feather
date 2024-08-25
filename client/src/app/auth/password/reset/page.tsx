@@ -1,9 +1,9 @@
-import PasswordResetForm from "@/components/forms/auth/PasswordResetForm";
+import PasswordResetRequestForm from "@/components/forms/auth/PasswordResetRequestForm";
 
 export default function Page() {
   return (
-    <div className="flex justify-center">
-      <PasswordResetForm />
-    </div>
+    <section className="flex flex-1 items-center justify-center">
+      <PasswordResetRequestForm />
+    </section>
   );
 }

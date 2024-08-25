@@ -101,7 +101,7 @@ export default function RegisterForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="md:mt-30 mt-20 flex w-4/5 flex-col rounded-lg border border-green-500 p-3 duration-200"
+      className="flex w-4/5 flex-col rounded-lg border border-green-500 p-4 shadow-lg shadow-green-500 duration-300"
     >
       <FormHeader />
       <div className="grid grid-cols-1 md:grid-cols-2">

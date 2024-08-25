@@ -6,8 +6,8 @@ export default function Page({
   params: { uid: string; token: string };
 }) {
   return (
-    <div className="flex justify-center">
+    <section className="flex flex-1 items-center justify-center">
       <PasswordResetConfirmationForm uid={params.uid} token={params.token} />
-    </div>
+    </section>
   );
 }
