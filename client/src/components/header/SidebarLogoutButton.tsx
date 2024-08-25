@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/lib/reduxHooks";
 import { logout } from "@/data/authData";
 import { setLogout } from "@/lib/features/auth/authSlice";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface PropTypes {
   icon: ReactNode;
@@ -15,6 +16,7 @@ interface PropTypes {
 
 export default function SidebarLogoutButton({ icon, title }: PropTypes) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const variants = {
     hidden: {
@@ -35,7 +37,9 @@ export default function SidebarLogoutButton({ icon, title }: PropTypes) {
     if (res.ok) {
       localStorage.removeItem("username");
       dispatch(setLogout());
-      toast.success("Logout successfull");
+      router.replace("/auth/login/");
+      toast.dismiss();
+      toast.info("Logout successfull");
     } else {
       toast.error("An error occured during logout");
     }

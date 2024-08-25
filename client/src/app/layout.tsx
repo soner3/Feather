@@ -31,7 +31,9 @@ export default function RootLayout({
           <ClientAuth />
           <Toast />
           <Header />
-          <main className="text-black dark:text-white">{children}</main>
+          <main className="bg-white text-black dark:bg-slate-900 dark:text-white">
+            {children}
+          </main>
         </StoreProvider>
       </body>
     </html>

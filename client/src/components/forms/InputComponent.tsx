@@ -12,6 +12,8 @@ type InputComponentType = {
   register: UseFormRegister<any>;
   registerSchema: string;
   required: boolean;
+  hidden?: boolean;
+  value?: string | number;
 };
 
 export default function InputComponent({

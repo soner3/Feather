@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { toast } from "react-toastify";
 import InputComponent from "../InputComponent";
 import FormHeader from "../FormHeader";
@@ -12,7 +11,7 @@ import { resendActivationEmail, createUser } from "@/data/authData";
 import {
   TRegisterUserSchema,
   RegisterUserSchema,
-} from "@/lib/validationSchemas";
+} from "@/lib/validationSchemas/RegisterSchema";
 
 interface ServerValidationType {
   username: Array<string>;

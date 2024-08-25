@@ -9,15 +9,13 @@ import SubmitButton from "./SubmitButton";
 import { login } from "@/data/authData";
 import { setLogin } from "@/lib/features/auth/authSlice";
 import { useAppDispatch } from "@/lib/reduxHooks";
-import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas/LoginSchema";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [isAuth, setIsAuth] = useState(false);
 
   const {
     register,
@@ -41,7 +39,6 @@ export default function LoginForm() {
         localStorage.setItem("username", response_data.username);
         dispatch(setLogin(response_data.username));
         router.replace("/");
-        setIsAuth(true);
         toast.success("Login Successfull");
         reset();
       }
@@ -55,7 +52,7 @@ export default function LoginForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="md:mt-30 mt-20 flex w-1/2 flex-col rounded-lg border border-green-500 p-4 duration-200"
+      className="md:mt-30 mt-20 flex w-3/4 flex-col rounded-lg border border-green-500 p-4 duration-200 md:w-1/2"
     >
       <FormHeader />
       <p className="text-center">
@@ -89,15 +86,10 @@ export default function LoginForm() {
         error={errors.password}
         errorMessage={errors.password?.message}
       />
+      <p className="my-1 pr-4 text-right text-green-500 hover:text-green-600 hover:underline">
+        <Link href={"/auth/password/reset/"}>Forgot Password?</Link>
+      </p>
       <SubmitButton isSubmitting={isSubmitting} text="Login" />
-      {isAuth && (
-        <Link
-          href={"/"}
-          className="mx-auto my-1 w-1/2 rounded-lg bg-green-600 p-2 text-center text-white duration-300 hover:scale-105 active:scale-90"
-        >
-          Go to Homepage
-        </Link>
-      )}
     </form>
   );
 }

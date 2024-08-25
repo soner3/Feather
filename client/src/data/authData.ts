@@ -1,6 +1,8 @@
-import { TLoginSchema, TRegisterUserSchema } from "@/lib/validationSchemas";
+import { TLoginSchema } from "@/lib/validationSchemas/LoginSchema";
+import { TPasswordResetConfirmSchema } from "@/lib/validationSchemas/PasswordResetConfirmSchema";
+import { TPasswordResetRequestSchema } from "@/lib/validationSchemas/PasswordResetRequestSchema";
+import { TRegisterUserSchema } from "@/lib/validationSchemas/RegisterSchema";
 import { jwtDecode } from "jwt-decode";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { toast } from "react-toastify";
 
 type UsernameType = {
@@ -45,20 +47,6 @@ export async function login(data: TLoginSchema): Promise<UsernameType | null> {
     return null;
   }
 }
-
-// export async function verifyRefreshToken(
-//   refreshToken: RequestCookie,
-// ): Promise<number> {
-//   const res = await fetch("http://nginx/auth/jwt/verify/", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Cookie: `feather_refresh=${refreshToken.value}`,
-//     },
-//     credentials: "include",
-//   });
-//   return res.status;
-// }
 
 export async function rotateToken(): Promise<Response | null> {
   try {
@@ -111,10 +99,47 @@ export async function resendActivationEmail(
       },
       body: JSON.stringify(data),
     });
-    console.log(res.status);
     return res;
   } catch (error) {
     toast.error("An Error Occurred while resending activation email");
+  }
+}
+
+export async function sendResetPasswordMail(
+  data: TPasswordResetRequestSchema,
+): Promise<Response | null> {
+  try {
+    const res = await fetch("http://localhost:8080/users/reset_password/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return res;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function resetPasswordConfirm(
+  data: TPasswordResetConfirmSchema,
+): Promise<Response | null> {
+  try {
+    const res = await fetch(
+      "http://localhost:8080/users/reset_password_confirm/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    return res;
+  } catch (error) {
+    return null;
   }
 }
 
