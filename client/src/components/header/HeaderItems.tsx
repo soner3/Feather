@@ -1,7 +1,7 @@
 import SidebarButton from "./SidebarButton";
-import Sidebar from "./Sidebar";
 import Logo from "../Logo";
 import ThemeButtons from "./ThemeButtons";
+import Sidebar from "./Sidebar";
 
 export default function HeaderItems() {
   return (
