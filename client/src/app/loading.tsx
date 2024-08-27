@@ -1,3 +1,5 @@
+import PageLoadingSpinner from "@/ui/PageLoadingSpinner";
+
 export default function Loading() {
-  return <div>Loading...</div>;
+  return <PageLoadingSpinner />;
 }
