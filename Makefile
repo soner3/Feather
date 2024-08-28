@@ -30,3 +30,6 @@ collectstatic:
 
 shell:
 	docker compose run --rm server python manage.py shell
+
+fill-db:
+	docker compose run --rm server python manage.py fill_db
