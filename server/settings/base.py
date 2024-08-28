@@ -34,6 +34,8 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "django_countries",
     "celery",
+    "cloudinary_storage",
+    "cloudinary",
 ]
 
 LOCAL_APPS = [
@@ -43,7 +45,7 @@ LOCAL_APPS = [
     "apps.posts",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = THIRD_PARTY_APPS + LOCAL_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -135,6 +137,16 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "static/"
 
+MEDIA_URL = "/media/"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+cloudinary.config(
+    cloud_name=getenv("CLOUD_NAME"),
+    api_key=getenv("API_KEY"),
+    api_secret=getenv("API_SECRET"),
+)
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -192,11 +204,6 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-cloudinary.config(
-    cloud_name=getenv("CLOUD_NAME"),
-    api_key=getenv("API_KEY"),
-    api_secret=getenv("API_SECRET"),
-)
 
 CELERY_BROKER_URL = getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = getenv("CELERY_RESULT_BACKEND")

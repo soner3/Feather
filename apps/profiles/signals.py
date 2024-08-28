@@ -15,5 +15,5 @@ def create_profile(sender: Type[User], instance: User, created: bool, **kwargs) 
         logger.info(f"Profile created for {instance.first_name} {instance.last_name}")
     else:
         logger.info(
-            f"Profile could not be created for {instance.first_name} {instance.last_name}"
+            f"Profile already exists for {instance.first_name} {instance.last_name}"
         )

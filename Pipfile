@@ -47,6 +47,7 @@ pillow = "*"
 djangorestframework-stubs = "*"
 pika = "*"
 celery-stubs = "*"
+django-cloudinary-storage = "*"
 
 [dev-packages]
 

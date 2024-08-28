@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from apps.users.models import User
 from django_countries.fields import CountryField
+from cloudinary.models import CloudinaryField
 from django.utils.translation import gettext_lazy as _
 
 
@@ -23,31 +24,32 @@ class Profile(models.Model):
     city: models.CharField = models.CharField(
         max_length=255,
         help_text=_("The City the User lives in"),
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name=_("City"),
     )
     zip_code: models.CharField = models.CharField(
         max_length=25,
         help_text=_("The zip code of the City the User lives in"),
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name=_("ZIP Code"),
     )
     street: models.CharField = models.CharField(
         max_length=255,
         help_text=_("The street the User lives in"),
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name=_("Street"),
     )
     house_number: models.CharField = models.CharField(
         max_length=255,
         help_text=_("The house number of the User"),
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name=_("House Number"),
     )
+    profile_picture = CloudinaryField("images", blank=True, null=True)
     created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
 
     class Meta:
