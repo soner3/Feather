@@ -8,4 +8,4 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["message", "profile"]
+        fields = ["id", "message", "profile"]

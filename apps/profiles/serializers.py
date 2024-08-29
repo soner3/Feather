@@ -17,7 +17,6 @@ class CurrentProfileSerializer(serializers.ModelSerializer):
 
 class ProfilePostsSerializer(serializers.ModelSerializer):
     user = UserPostsSerializer()
-    profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
@@ -25,9 +24,3 @@ class ProfilePostsSerializer(serializers.ModelSerializer):
             "user",
             "profile_picture",
         ]
-
-    def get_profile_picture(self, obj):
-        if obj.profile_picture:
-            return obj.profile_picture.url
-
-        return ""

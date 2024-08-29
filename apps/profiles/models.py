@@ -2,7 +2,8 @@ import uuid
 from django.db import models
 from apps.users.models import User
 from django_countries.fields import CountryField
-from cloudinary.models import CloudinaryField
+
+# from cloudinary.models import CloudinaryField
 from django.utils.translation import gettext_lazy as _
 
 
@@ -49,7 +50,8 @@ class Profile(models.Model):
         blank=True,
         verbose_name=_("House Number"),
     )
-    profile_picture = CloudinaryField("images", blank=True, null=True)
+    # profile_picture = CloudinaryField("image", blank=True, null=True)
+    profile_picture: models.URLField = models.URLField(blank=True, null=True)
     created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
 
     class Meta:
