@@ -38,7 +38,7 @@ export default function LoginForm() {
         toast.dismiss();
         localStorage.setItem("username", response_data.username);
         dispatch(setLogin(response_data.username));
-        router.replace("/");
+        router.replace("/feather/posts/");
         toast.success("Login Successfull");
         reset();
       }

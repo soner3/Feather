@@ -11,7 +11,7 @@ from .pagination import PostsListPagination
 class PostsList(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     pagination_class = PostsListPagination
 
     def get(self, request: Request, *args: Any, **kwargs: Any) -> Response:

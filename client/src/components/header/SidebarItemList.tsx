@@ -26,19 +26,19 @@ const sidebarItems: sidebarListItemType[] = [
     id: "1",
     icon: <HiHome className="size-6" />,
     title: "Homepage",
-    href: "/",
+    href: "/feather/posts/",
   },
   {
     id: "2",
     icon: <HiHome className="size-6" />,
     title: "Homepage",
-    href: "/",
+    href: "/feather/posts/",
   },
   {
     id: "3",
     icon: <HiHome className="size-6" />,
     title: "Homepage",
-    href: "/",
+    href: "/feather/posts/",
   },
 ];
 
@@ -47,13 +47,13 @@ const sidebarFooterLoggedOut: sidebarListItemType[] = [
     id: "1",
     icon: <HiUserCircle className="size-6" />,
     title: "Login",
-    href: "/auth/login",
+    href: "/auth/login/",
   },
   {
     id: "2",
     icon: <HiUserPlus className="size-6" />,
     title: "Register",
-    href: "/auth/register",
+    href: "/auth/register/",
   },
 ];
 

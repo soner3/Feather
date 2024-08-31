@@ -1,7 +1,10 @@
-export default function Home() {
+import Link from "next/link";
+
+export default function Page() {
   return (
     <>
-      <h1>Hallo</h1>
+      <Link href={"/auth/login/"}>Login</Link>
+      <Link href={"/auth/register/"}>Register</Link>
     </>
   );
 }

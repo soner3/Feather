@@ -11,15 +11,29 @@ services:
     restart: always
     ports:
       - 8080:80
+      - 443:443
     volumes:
       - ./static:/app/static
       - logs_store:/app/var/log/nginx
+      # - ./certbot/conf:/etc/letsencrypt
+      # - ./certbot/www:/var/www/certbot
+
     depends_on:
       - client
       - server
       - mailpit
     networks:
       - feather_network
+
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - ./certbot/conf:/etc/letsencrypt
+  #     - ./certbot/www:/var/www/certbot
+  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email {email} -d {domain} --agree-tos
+  #   networks:
+  #     - feather_network
 
   server:
     container_name: server
