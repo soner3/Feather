@@ -1,10 +1,9 @@
-import ServerTest from "@/ui/ServerTest";
+import CallPostsContainer from "@/components/Posts/CallPostsContainer";
 
 export default function Page() {
   return (
-    <section>
-      <ServerTest />
-      Post Seite
+    <section className="m-8">
+      <CallPostsContainer />
     </section>
   );
 }

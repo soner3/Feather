@@ -8,9 +8,14 @@ SECRET_KEY = getenv(
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "localhost:8080",
     "localhost",
     "nginx",
 ]
+
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",

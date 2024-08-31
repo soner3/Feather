@@ -31,7 +31,7 @@ export default function SidebarButton() {
           rotate: "360deg",
         }}
         whileTap={{
-          scale: 0,
+          scale: 0.5,
           rotate: "-180deg",
         }}
         whileHover={{
