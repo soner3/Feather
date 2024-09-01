@@ -16,4 +16,8 @@
   .error {
     @apply mt-1 pl-1 text-red-500 ring-red-500 transition-all duration-300;
   }
+
+  .pagination-button {
+    @apply rounded-full border border-green-500 p-2 duration-200 hover:bg-green-500 hover:text-white active:bg-green-600;
+  }
 }

@@ -4,15 +4,12 @@ import { rotateToken } from "@/data/authData";
 import { setLogin, setLogout } from "@/lib/features/auth/authSlice";
 import { useAppDispatch } from "@/lib/reduxHooks";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function ClientAuth() {
   const dispatch = useAppDispatch();
   const path = usePathname();
   const router = useRouter();
-
-  // Only for Developement
-  const [isRotating, setIsRotating] = useState(false);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -51,12 +48,7 @@ export default function ClientAuth() {
       }
     }
 
-    if (!isRotating) {
-      setIsRotating(true);
-      rotateAllToken();
-      setIsRotating(false);
-    }
-    setIsRotating(true);
+    rotateAllToken();
 
     const interval = setInterval(
       () => {
@@ -68,7 +60,7 @@ export default function ClientAuth() {
     return () => {
       clearInterval(interval);
     };
-  }, [dispatch, isRotating, path, router]);
+  }, [dispatch, path, router]);
 
   return null;
 }

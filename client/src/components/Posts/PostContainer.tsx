@@ -1,8 +1,9 @@
 "use client";
 
-import { PostsDataType } from "@/data/postData";
+import { PostsDataType, PostType } from "@/data/postData";
 import { useState } from "react";
 import Post from "./Post";
+import PostPagination from "./PostPagination";
 
 export default function PostContainer({
   serverPosts,
@@ -10,29 +11,44 @@ export default function PostContainer({
   serverPosts: PostsDataType;
 }) {
   const [posts, setPosts] = useState(serverPosts.results);
-  const [next, setNext] = useState(serverPosts.next);
-  const [previous, setPrevious] = useState(serverPosts.previous);
-  const numberPosts = serverPosts.count;
+  const [next, setNext] = useState<string | null>(serverPosts.next);
+  const [previous, setPrevious] = useState<string | null>(serverPosts.previous);
+  const [activeValue, setActiveValue] = useState(1);
+  const [numberPosts, setNumberPosts] = useState(serverPosts.count);
 
-  async function handleNext() {
-    const url = setDomainName(next);
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const data: PostsDataType = await res.json();
-    if (data) {
-      setPosts(data.results);
-      setNext(data.next);
-    }
+  function handleSetPosts(postData: PostType[]) {
+    setPosts(postData);
+  }
+
+  function handleSetNext(nextFetch: string | null) {
+    setNext(nextFetch);
+  }
+
+  function handleSetPrevious(previousFetch: string | null) {
+    setPrevious(previousFetch);
+  }
+
+  function handleSetActiveValue(newValue: number) {
+    setActiveValue(newValue);
+  }
+
+  function handleSetNumberPosts(newValue: number) {
+    setNumberPosts(newValue);
   }
 
   return (
     <>
-      <button onClick={handleNext}>Next</button>
+      <PostPagination
+        count={Math.ceil(numberPosts / 5)}
+        activeValue={activeValue}
+        next={next}
+        previous={previous}
+        handleSetActiveValue={handleSetActiveValue}
+        handleSetNext={handleSetNext}
+        handleSetNumberPosts={handleSetNumberPosts}
+        handleSetPosts={handleSetPosts}
+        handleSetPrevious={handleSetPrevious}
+      />
       <ul className="flex flex-col">
         {posts.map((post) => {
           return <Post key={post.id} post={post} />;
@@ -40,12 +56,4 @@ export default function PostContainer({
       </ul>
     </>
   );
-}
-
-export function setDomainName(url: string): string {
-  if (url.includes("nginx")) {
-    return url.replace("nginx", "localhost:8080");
-  } else {
-    return url.replace("localhost", "localhost:8080");
-  }
 }
