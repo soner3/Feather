@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 interface ServerValidationType {
-  validation: Array<string>;
+  new_password: Array<string>;
 }
 
 export default function PasswordResetConfirmationForm({
@@ -50,14 +50,18 @@ export default function PasswordResetConfirmationForm({
         "An error occurred while password resetting. Please try Again.",
       );
     } else {
+      toast.dismiss();
       if (res.ok) {
         reset();
         router.replace("/auth/login/");
-        toast.dismiss();
         toast.success("Password reset was successfull");
       } else {
         const data: ServerValidationType = await res.json();
-        toast.error(data.validation[0]);
+        if (data.new_password) {
+          toast.error(data.new_password[0]);
+        } else {
+          toast.error("An Error Occurred during Password Reset");
+        }
       }
     }
   }
