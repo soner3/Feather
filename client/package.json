@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.0.0",
     "@mui/material": "^6.0.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "async-mutex": "^0.5.0",
     "cookies-next": "^4.2.1",
     "framer-motion": "^11.3.29",
     "jwt-decode": "^4.0.0",

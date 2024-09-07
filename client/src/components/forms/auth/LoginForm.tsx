@@ -6,21 +6,22 @@ import { toast } from "react-toastify";
 import FormHeader from "../FormHeader";
 import InputComponent from "../InputComponent";
 import SubmitButton from "./SubmitButton";
-import { login } from "@/data/authData";
 import { setLogin } from "@/lib/features/auth/authSlice";
 import { useAppDispatch } from "@/lib/reduxHooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas/LoginSchema";
+import { useGetTokenMutation } from "@/lib/features/api/apiSlice";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
+  const [getToken, { isLoading }] = useGetTokenMutation();
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<TLoginSchema>({
     resolver: zodResolver(LoginSchema),
@@ -31,18 +32,17 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: TLoginSchema) => {
-    toast.loading("Login...");
+    toast.loading("Loading...");
     try {
-      const response_data = await login(data);
-      if (response_data) {
-        toast.dismiss();
-        localStorage.setItem("username", response_data.username);
-        dispatch(setLogin(response_data.username));
-        router.replace("/feather/posts/");
-        toast.success("Login Successfull");
-        reset();
-      }
-    } catch {
+      const response_data = await getToken(data).unwrap();
+
+      toast.dismiss();
+      localStorage.setItem("username", response_data.username);
+      dispatch(setLogin(response_data.username));
+      router.replace("/feather/posts/");
+      toast.success("Login Successfull");
+      reset();
+    } catch (error) {
       toast.dismiss();
       toast.error("An error occurred during login");
     }
@@ -89,7 +89,7 @@ export default function LoginForm() {
       <p className="my-1 pr-4 text-right text-green-500 hover:text-green-600 hover:underline">
         <Link href={"/auth/password/reset/"}>Forgot Password?</Link>
       </p>
-      <SubmitButton isSubmitting={isSubmitting} text="Login" />
+      <SubmitButton isSubmitting={isLoading} text="Login" />
     </form>
   );
 }
