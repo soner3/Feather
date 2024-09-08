@@ -5,7 +5,6 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
-    TokenVerifyView,
 )
 from rest_framework.views import APIView
 from .serializers import CustomTokenObtainPairSerializer
@@ -104,25 +103,10 @@ class CookieTokenRefreshView(TokenRefreshView):
         return response
 
 
-class CookieTokenVerifyView(TokenVerifyView):
-
-    def post(self, request: Request, *args, **kwargs) -> Response:
-        data = request.data.copy()
-        data["token"] = request.COOKIES[settings.REFRESH_COOKIE_NAME]
-        serializer = self.get_serializer(data=data)
-
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
-
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-
 class CookieTokenDeleteView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request: Request):
+    def post(self, request: Request):
 
         response = Response(data=request.data, status=status.HTTP_200_OK)
         try:

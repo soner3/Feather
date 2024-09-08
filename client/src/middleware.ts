@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isTokenExpired } from "./data/authData";
+import { isTokenExpired } from "./lib/tokenExpiration";
 
 export function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get("feather_refresh");

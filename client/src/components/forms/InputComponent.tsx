@@ -1,21 +1,6 @@
 "use client";
 
-import { TextField } from "@mui/material";
-import { FieldError, UseFormRegister } from "react-hook-form";
-
-type InputComponentType = {
-  inputType: string;
-  inputId: string;
-  labelValue: string;
-  plcaeholder: string;
-  error: FieldError | undefined | string;
-  errorMessage: string | undefined;
-  register: UseFormRegister<any>;
-  registerSchema: string;
-  required: boolean;
-  hidden?: boolean;
-  value?: string | number;
-};
+import { InputComponentType } from "@/lib/interfaces";
 
 export default function InputComponent({
   labelValue,

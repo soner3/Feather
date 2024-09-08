@@ -1,5 +1,6 @@
 "use client";
 
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -12,6 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TLoginSchema, LoginSchema } from "@/lib/validationSchemas/LoginSchema";
 import { useGetTokenMutation } from "@/lib/features/api/apiSlice";
+import { UserDoesNotExist } from "@/lib/interfaces";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -43,8 +45,16 @@ export default function LoginForm() {
       toast.success("Login Successfull");
       reset();
     } catch (error) {
-      toast.dismiss();
-      toast.error("An error occurred during login");
+      const fetchError = error as FetchBaseQueryError;
+      const errorMessage = fetchError.data as UserDoesNotExist;
+
+      if (fetchError.status === 401) {
+        toast.dismiss();
+        toast.error(errorMessage.detail);
+      } else {
+        toast.dismiss();
+        toast.error(errorMessage.non_field_errors[0]);
+      }
     }
   };
 

@@ -9,13 +9,12 @@ import FormHeader from "../FormHeader";
 import InputComponent from "../InputComponent";
 import { useForm } from "react-hook-form";
 import SubmitButton from "./SubmitButton";
-import { resetPasswordConfirm } from "@/data/authData";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
-interface ServerValidationType {
-  new_password: Array<string>;
-}
+import { useResetPasswordConfirmationMutation } from "@/lib/features/api/apiSlice";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { PasswordResetServerError } from "@/lib/interfaces";
+import { useState } from "react";
 
 export default function PasswordResetConfirmationForm({
   uid,
@@ -28,7 +27,7 @@ export default function PasswordResetConfirmationForm({
     handleSubmit,
     reset,
     register,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<TPasswordResetConfirmSchema>({
     resolver: zodResolver(PasswordResetConfirmSchema),
     defaultValues: {
@@ -38,31 +37,27 @@ export default function PasswordResetConfirmationForm({
       re_new_password: "",
     },
   });
-
+  const [sendPasswordConfirmation, { isLoading }] =
+    useResetPasswordConfirmationMutation();
+  const [serverError, setServerError] =
+    useState<null | PasswordResetServerError>(null);
   const router = useRouter();
 
   async function onSubmit(data: TPasswordResetConfirmSchema) {
     toast.loading("Loading...");
-    const res = await resetPasswordConfirm(data);
-
-    if (!res) {
-      toast.error(
-        "An error occurred while password resetting. Please try Again.",
-      );
-    } else {
+    try {
+      await sendPasswordConfirmation(data).unwrap();
       toast.dismiss();
-      if (res.ok) {
-        reset();
-        router.replace("/auth/login/");
-        toast.success("Password reset was successfull");
-      } else {
-        const data: ServerValidationType = await res.json();
-        if (data.new_password) {
-          toast.error(data.new_password[0]);
-        } else {
-          toast.error("An Error Occurred during Password Reset");
-        }
-      }
+
+      reset();
+      setServerError(null);
+      router.replace("/auth/login/");
+      toast.success("Password reset was successfull");
+    } catch (error) {
+      toast.dismiss();
+      const fetchError = error as FetchBaseQueryError;
+      const errorMessages = fetchError.data as PasswordResetServerError;
+      setServerError(errorMessages);
     }
   }
 
@@ -95,7 +90,15 @@ export default function PasswordResetConfirmationForm({
         errorMessage={errors.re_new_password?.message}
         required
       />
-      <SubmitButton text="Reset Password" isSubmitting={isSubmitting} />
+      {serverError && (
+        <ul className="error flex flex-col items-center p-2">
+          {serverError.new_password &&
+            serverError.new_password.map((message) => {
+              return <li key={message}>{message}</li>;
+            })}
+        </ul>
+      )}
+      <SubmitButton text="Reset Password" isSubmitting={isLoading} />
     </form>
   );
 }

@@ -9,42 +9,29 @@ import { useForm } from "react-hook-form";
 import InputComponent from "../InputComponent";
 import FormHeader from "../FormHeader";
 import SubmitButton from "./SubmitButton";
-import { sendResetPasswordMail } from "@/data/authData";
 import { toast } from "react-toastify";
-import { useState } from "react";
-
-interface ServerValidationType {
-  email: Array<string>;
-}
+import { useResetPasswordRequestMutation } from "@/lib/features/api/apiSlice";
 
 export default function PasswordResetRequestForm() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<TPasswordResetRequestSchema>({
     resolver: zodResolver(PasswordResetRequestSchema),
     defaultValues: {
       email: "",
     },
   });
-  const [sentMail, setSentMail] = useState(false);
+  const [sendResetPasswordMail, { isLoading }] =
+    useResetPasswordRequestMutation();
 
   async function onSubmit(data: TPasswordResetRequestSchema) {
-    const res = await sendResetPasswordMail(data);
-
-    if (!res) {
-      toast.error(
-        "An error occurred while sending the mail. Please try again.",
-      );
-    } else {
-      if (res.ok) {
-        setSentMail(true);
-        toast.success("A Password Reset Mail has been sent");
-      } else {
-        const data: ServerValidationType = await res.json();
-        toast.error(data.email[0]);
-      }
+    try {
+      await sendResetPasswordMail(data).unwrap();
+      toast.success("A Password Reset Mail has been sent");
+    } catch (error) {
+      toast.error("An Error Occurred. Please Try Again");
     }
   }
 
@@ -67,8 +54,8 @@ export default function PasswordResetRequestForm() {
         required
       />
       <SubmitButton
-        text={`${sentMail ? "Resent Reset Password Mail" : "Send Reset Password Mail"}`}
-        isSubmitting={isSubmitting}
+        text={"Send Reset Password Mail"}
+        isSubmitting={isLoading}
       />
     </form>
   );

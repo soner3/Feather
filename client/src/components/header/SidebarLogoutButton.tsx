@@ -4,11 +4,9 @@ import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import Link from "next/link";
 import { useAppDispatch } from "@/lib/reduxHooks";
-import { logout } from "@/data/authData";
 import { setLogout } from "@/lib/features/auth/authSlice";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import { changeSidebar } from "@/lib/features/sidebar/sidebarSlice";
+import { useDeleteTokenMutation } from "@/lib/features/api/apiSlice";
 
 interface PropTypes {
   icon: ReactNode;
@@ -17,7 +15,7 @@ interface PropTypes {
 
 export default function SidebarLogoutButton({ icon, title }: PropTypes) {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const [deleteToken, { isLoading, isSuccess }] = useDeleteTokenMutation();
 
   const variants = {
     hidden: {
@@ -33,25 +31,26 @@ export default function SidebarLogoutButton({ icon, title }: PropTypes) {
   };
 
   async function handleLogout() {
-    const res = await logout();
+    toast.dismiss();
+    try {
+      await deleteToken().unwrap();
 
-    if (res.ok) {
-      localStorage.removeItem("username");
-      dispatch(changeSidebar(false));
       dispatch(setLogout());
-      router.replace("/auth/login/");
-      toast.dismiss();
+      localStorage.removeItem("username");
       toast.info("Logout successfull");
-    } else {
-      toast.error("An error occured during logout");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error("An error occured during logout" + error.message);
+      }
     }
   }
 
   return (
-    <Link href={"/auth/login/"} replace>
-      <motion.li
-        className="flex h-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-green-500 dark:shadow-green-500"
+    <Link href={"/auth/login/"}>
+      <motion.button
+        className="flex h-full w-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow active:shadow-green-500 dark:shadow-green-500"
         onClick={handleLogout}
+        disabled={isLoading}
         variants={variants}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -61,7 +60,7 @@ export default function SidebarLogoutButton({ icon, title }: PropTypes) {
       >
         <div>{icon}</div>
         <div>{title}</div>
-      </motion.li>
+      </motion.button>
     </Link>
   );
 }

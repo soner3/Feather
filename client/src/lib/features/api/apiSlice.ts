@@ -7,7 +7,9 @@ import {
 } from "@reduxjs/toolkit/query";
 import { Mutex } from "async-mutex";
 import { setLogout } from "../auth/authSlice";
-import { PostsDataType, Username } from "@/lib/interfaces";
+import { PostsDataType, TMailSchema, Username } from "@/lib/interfaces";
+import { TRegisterUserSchema } from "@/lib/validationSchemas/RegisterSchema";
+import { TPasswordResetConfirmSchema } from "@/lib/validationSchemas/PasswordResetConfirmSchema";
 
 const mutex = new Mutex();
 
@@ -59,6 +61,7 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
+  tagTypes: ["Post"],
   endpoints: (builder) => ({
     // Login Endpoint
     getToken: builder.mutation<Username, TLoginSchema>({
@@ -68,11 +71,68 @@ export const apiSlice = createApi({
         body: loginData,
       }),
     }),
+
+    // Delete all http-only Cookie Token
+    deleteToken: builder.mutation<null, void>({
+      query: () => ({
+        url: "/auth/jwt/delete/",
+        method: "POST",
+      }),
+    }),
+
+    // User Creation Endpoint
+    createUser: builder.mutation<null, TRegisterUserSchema>({
+      query: (registerData) => ({
+        url: "/users/",
+        method: "POST",
+        body: registerData,
+      }),
+    }),
+
+    // Resend Activation Mail
+    resendActivationMail: builder.mutation<null, TMailSchema>({
+      query: (email) => ({
+        url: "/users/resend_activation/",
+        method: "POST",
+        body: email,
+      }),
+    }),
+
+    // Reset Password Request
+    resetPasswordRequest: builder.mutation<null, TMailSchema>({
+      query: (email) => ({
+        url: "/users/reset_password/",
+        method: "POST",
+        body: email,
+      }),
+    }),
+
+    // Reset Password Confirmation
+    resetPasswordConfirmation: builder.mutation<
+      null,
+      TPasswordResetConfirmSchema
+    >({
+      query: (confirmationData) => ({
+        url: "/users/reset_password_confirm/",
+        method: "POST",
+        body: confirmationData,
+      }),
+    }),
+
     // Post List
     getPosts: builder.query<PostsDataType, void>({
       query: () => "/posts/list/",
+      providesTags: ["Post"],
     }),
   }),
 });
 
-export const { useGetTokenMutation, useGetPostsQuery } = apiSlice;
+export const {
+  useGetTokenMutation,
+  useGetPostsQuery,
+  useDeleteTokenMutation,
+  useCreateUserMutation,
+  useResendActivationMailMutation,
+  useResetPasswordConfirmationMutation,
+  useResetPasswordRequestMutation,
+} = apiSlice;
