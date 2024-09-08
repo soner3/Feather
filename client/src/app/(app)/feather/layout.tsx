@@ -7,7 +7,6 @@ export default function PostsLayout({
 }) {
   return (
     <>
-      <Header />
       <main>{children}</main>
     </>
   );

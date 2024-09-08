@@ -5,6 +5,7 @@ import StoreProvider from "./StoreProvider";
 import Toast from "@/components/Toast";
 import ApplyTheme from "@/ui/ApplyTheme";
 import ClientAuth from "@/components/ClientAuth";
+import Header from "@/components/header/Header";
 
 const inter = Signika({ subsets: ["latin"] });
 
@@ -28,6 +29,8 @@ export default function RootLayout({
         <StoreProvider>
           <ClientAuth />
           <ApplyTheme />
+          <Header />
+
           {children}
         </StoreProvider>
         <Toast />

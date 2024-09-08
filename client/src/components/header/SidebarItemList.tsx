@@ -1,7 +1,13 @@
 "use client";
 
 import { ReactNode } from "react";
-import { HiHome, HiUserPlus, HiUserCircle, HiUserMinus } from "react-icons/hi2";
+import {
+  HiHome,
+  HiUserPlus,
+  HiUserCircle,
+  HiUserMinus,
+  HiChatBubbleBottomCenterText,
+} from "react-icons/hi2";
 import SidebarItem from "./SidebarItem";
 import { motion } from "framer-motion";
 import SidebarFooter from "./SidebarFooter";
@@ -26,19 +32,19 @@ const sidebarItems: sidebarListItemType[] = [
     id: "1",
     icon: <HiHome className="size-6" />,
     title: "Homepage",
-    href: "/feather/posts/",
+    href: "/",
   },
   {
     id: "2",
-    icon: <HiHome className="size-6" />,
-    title: "Homepage",
+    icon: <HiChatBubbleBottomCenterText className="size-6" />,
+    title: "Posts",
     href: "/feather/posts/",
   },
   {
     id: "3",
     icon: <HiHome className="size-6" />,
     title: "Homepage",
-    href: "/feather/posts/",
+    href: "/",
   },
 ];
 

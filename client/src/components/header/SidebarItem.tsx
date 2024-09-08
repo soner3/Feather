@@ -4,6 +4,7 @@ import React, { ReactNode } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAppSelector } from "@/lib/reduxHooks";
 
 interface PropTypes {
   icon: ReactNode;
@@ -13,6 +14,7 @@ interface PropTypes {
 
 export default function SidebarItem({ icon, title, href }: PropTypes) {
   const path = usePathname();
+  const { isAuthenticated } = useAppSelector((store) => store.auth);
 
   const variants = {
     hidden: {
@@ -28,7 +30,16 @@ export default function SidebarItem({ icon, title, href }: PropTypes) {
   };
 
   return (
-    <Link href={href} prefetch replace>
+    <Link
+      href={
+        !href.startsWith("/feather")
+          ? href
+          : isAuthenticated
+            ? href
+            : "/auth/login/"
+      }
+      replace
+    >
       <motion.li
         className={`flex h-full cursor-pointer items-center gap-4 rounded-lg px-2 py-4 shadow shadow-green-500 ${path === href ? "shadow-md" : ""}`}
         variants={variants}
