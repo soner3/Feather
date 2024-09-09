@@ -25,7 +25,7 @@ export default function Sidebar() {
 
   return (
     <motion.nav
-      className="fixed left-0 top-0 rounded-r-2xl bg-white p-6 shadow shadow-green-500 dark:bg-slate-900"
+      className="fixed left-0 top-0 z-10 rounded-r-2xl bg-white p-6 shadow shadow-green-500 dark:bg-slate-900"
       variants={sidebarVariants}
       initial="closed"
       animate={isOpen ? "open" : "closed"}

@@ -120,9 +120,18 @@ export const apiSlice = createApi({
     }),
 
     // Post List
-    getPosts: builder.query<PostsDataType, void>({
-      query: () => "/posts/list/",
-      providesTags: ["Post"],
+    getPosts: builder.query<PostsDataType, number | void>({
+      query: (page) => `/posts/list/?page=${page}`,
+      providesTags: (result, error, page) => {
+        return result
+          ? [
+              ...result.results.map(({ id }) => {
+                return { type: "Post" as const, id };
+              }),
+              { type: "Post", id: "PARTIAL-LIST" },
+            ]
+          : [{ type: "Post", id: "PARTIAL-LIST" }];
+      },
     }),
   }),
 });

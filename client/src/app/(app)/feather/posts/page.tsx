@@ -1,9 +1,9 @@
-import Test from "@/components/Posts/Test";
+import PostListContainer from "@/components/Posts/PostListContainer";
 
 export default function Page() {
   return (
     <section className="m-8">
-      <Test />
+      <PostListContainer />
     </section>
   );
 }
