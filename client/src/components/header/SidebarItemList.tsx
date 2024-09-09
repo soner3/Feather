@@ -7,6 +7,7 @@ import {
   HiUserCircle,
   HiUserMinus,
   HiChatBubbleBottomCenterText,
+  HiMiniUser,
 } from "react-icons/hi2";
 import SidebarItem from "./SidebarItem";
 import { motion } from "framer-motion";
@@ -42,9 +43,9 @@ const sidebarItems: sidebarListItemType[] = [
   },
   {
     id: "3",
-    icon: <HiHome className="size-6" />,
-    title: "Homepage",
-    href: "/",
+    icon: <HiMiniUser className="size-6" />,
+    title: "Profile",
+    href: "/feather/profile/",
   },
 ];
 
