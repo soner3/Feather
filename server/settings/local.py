@@ -13,9 +13,6 @@ ALLOWED_HOSTS = [
     "nginx",
 ]
 
-USE_X_FORWARDED_HOST = True
-USE_X_FORWARDED_PORT = True
-
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",
@@ -28,14 +25,6 @@ EMAIL_PORT = 1025
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = getenv("FEATHER_ADMIN_MAIL")
-
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.example.com"
-# EMAIL_PORT = 465
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = "your_email@example.com"
-# EMAIL_HOST_PASSWORD = "your_email_password"
-# DEFAULT_FROM_EMAIL = "webmaster@localhost"
 
 LOGGING = {
     "version": 1,

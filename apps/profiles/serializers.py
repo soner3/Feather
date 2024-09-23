@@ -22,5 +22,4 @@ class ProfilePostsSerializer(serializers.ModelSerializer):
         model = Profile
         fields = [
             "user",
-            "profile_picture",
         ]

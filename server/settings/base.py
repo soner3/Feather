@@ -2,7 +2,6 @@ from os import getenv, path
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
-import cloudinary
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -34,8 +33,6 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "django_countries",
     "celery",
-    "cloudinary_storage",
-    "cloudinary",
 ]
 
 LOCAL_APPS = [
@@ -137,14 +134,9 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "static/"
 
-MEDIA_URL = "/media/"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
-cloudinary.config(
-    cloud_name=getenv("CLOUD_NAME"),
-    api_key=getenv("API_KEY"),
-    api_secret=getenv("API_SECRET"),
-)
+MEDIA_URL = "http://localhost:8080/media/"
+MEDIA_ROOT = path.join(BASE_DIR, "media")
 
 
 # Default primary key field type
@@ -201,8 +193,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8080",
 ]
-
-CORS_ALLOW_CREDENTIALS = True
 
 
 CELERY_BROKER_URL = getenv("CELERY_BROKER_URL")
